@@ -42,12 +42,6 @@ func handleConnection(conn net.Conn) {
 	Printlog(fmt.Sprintf("A new connection:%s - %s", ADR, time.Now().Format("2025-04-09 13:04:10")))
 	
 
-	inputread := bufio.NewScanner(conn)
-	if !inputread.Scan() {
-	Printlog(fmt.Sprintf("Connection disconnected: %s",ADR))
-	return
-	}
-
 	Path := strings.ReplaceAll(ADR, ":", "_") + ".log"
 	records, err := os.OpenFile(Path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
@@ -55,6 +49,33 @@ func handleConnection(conn net.Conn) {
 		return
 	}
 	defer records.Close()
+
+	inputread := bufio.NewScanner(conn)
+	for {
+	if !inputread.Scan() {
+	Printlog(fmt.Sprintf("Connection disconnected: %s",ADR))
+	return
+	}
+
+	input := strings.TrimSpace(inputread.Text())
+	records.WriteString(fmt.Sprintf("%s\n", input))	
+
+
+	if input == "" {
+	conn.Write([]byte("Say something...\n"))
+	}else if input == "hello" {
+	conn.Write([]byte("Hi there!\n"))
+	} else if input == "bye" {
+	conn.Write([]byte("Goodbye!\n"))
+	return
+	}
+
+	
+	
+	}
+	
+	
+	
 
 
 
@@ -69,3 +90,8 @@ func handleConnection(conn net.Conn) {
 //run the function using:
 // using main.go and then open in web
 //open a new terminal and run nc localhost 4000
+
+
+//task: 
+//- main (code - completed), (comments - incomplete)
+//- Hanlde function (code - incomplete), (comments - incomplete)
