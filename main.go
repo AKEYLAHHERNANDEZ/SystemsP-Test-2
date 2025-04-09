@@ -36,6 +36,11 @@ func handleConnection(conn net.Conn) {
 	ADR := conn.RemoteAddr().String()
 	Printlog(fmt.Sprintf("A new connection:%s - %s", ADR, time.Now().Format("2025-04-09 13:04:10")))
 	
+
+	inputread := bufio.NewScanner(conn)
+	if !inputread.Scan() {
+	Printlog(fmt.Sprintf("Connection disconnected: %s",ADR))
+	}
 }
 
 
