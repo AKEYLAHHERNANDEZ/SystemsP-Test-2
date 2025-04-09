@@ -40,7 +40,19 @@ func handleConnection(conn net.Conn) {
 	inputread := bufio.NewScanner(conn)
 	if !inputread.Scan() {
 	Printlog(fmt.Sprintf("Connection disconnected: %s",ADR))
+	return
 	}
+
+	Path := strings.ReplaceAll(ADR, ":", "_") + ".log"
+	records, err := os.OpenFile(Path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("Error: ", err)
+		return
+	}
+	defer records.Close()
+
+
+
 }
 
 
