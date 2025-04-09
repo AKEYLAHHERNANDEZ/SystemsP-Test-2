@@ -12,6 +12,11 @@ import (
 )
 
 func main() {
+	flagPort := flag.String("flagPort", "4000","Listens for connections on port: ")
+	flag.Parse()
+	ListenON := fmt.Sprintf(":%s", *flagPort)
+	fmt.Println("Server is listening on", ListenON)
+
 	listener, err := net.Listen("tcp", ":4000")//change to an address
 	if err != nil {
 		panic(err)
