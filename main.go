@@ -17,13 +17,13 @@ func main() {
 	ListenON := fmt.Sprintf(":%s", *flagPort)
 	fmt.Println("Server is listening on", ListenON)
 
-	listener, err := net.Listen("tcp", ":4000")//change to an address
+	listener, err := net.Listen("tcp", ListenON)//change to an address
 	if err != nil {
 		panic(err)
 	}
 	defer listener.Close()
 
-	fmt.Println("Server listening on :4000")//change to an address
+	fmt.Println("Server listening on: ", ListenON )//change to an address
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
@@ -38,7 +38,7 @@ func main() {
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
 	ADR := conn.RemoteAddr().String()
-	Printlog(fmt.Sprintf("A new connection:%s - %s", ADR, time.Now().Format("2025-04-09 13:04:10")))
+	Print(fmt.Sprintf("A new connection:%s - %s", ADR, time.Now().Format("2025-04-09 13:04:10")))
 	
 
 	Path := strings.ReplaceAll(ADR, ":", "_") + ".log"
@@ -55,18 +55,18 @@ func handleConnection(conn net.Conn) {
 	for {
 	conerr := conn.SetReadDeadline(time.Now().Add(timeout))
 	if conerr != nil{
-	fmt.Printf("Cannot set deadline, connection timeout: ", conerr)
+	fmt.Printf("Cannot set deadline: %s\n ", conerr)
 	return
 	}
 
 	if !inputread.Scan() {
-	Printlog(fmt.Sprintf("Connection disconnected: %s",ADR))
+	Print(fmt.Sprintf("Connection disconnected: %s",ADR))
 	return
 	}
 
 	input := strings.TrimSpace(inputread.Text())
 	records.WriteString(fmt.Sprintf("%s\n", input))	
-
+		
 	if len(input) > Handle {
 	conn.Write([]byte("Truncated the message, due to its length "))
 	input = input[:Handle]
@@ -81,18 +81,23 @@ func handleConnection(conn net.Conn) {
 	return
 	}
 
-
-	
+	if input == "/time" {
+	conn.Write([]byte(time.Now().Format(time.RFC1123) + "\n"))
+	} else if input == "/quit" {
+		conn.Write([]byte("Closed connection.\n"))
+		return
+	} else if strings.HasPrefix(input, "/echo") {
+		conn.Write([]byte(input[6:] + "\n"))
+	} else {
+		conn.Write([]byte(input + "\n"))
 	}
 	
-	
-	
-
-
-
+	}
 }
 
-
+func Print(msg string) {
+	fmt.Println(msg)
+}
 
 
 
