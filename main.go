@@ -37,7 +37,6 @@ func main() {
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
-	
 	ADR := conn.RemoteAddr().String()
 	Printlog(fmt.Sprintf("A new connection:%s - %s", ADR, time.Now().Format("2025-04-09 13:04:10")))
 	
@@ -50,8 +49,16 @@ func handleConnection(conn net.Conn) {
 	}
 	defer records.Close()
 
+	timeout := 30 * time.Second 
 	inputread := bufio.NewScanner(conn)
+
 	for {
+	conerr := conn.SetReadDeadline(time.Now().Add(timeout))
+	if conerr != nil{
+	fmt.Printf("Cannot set deadline, connection timeout: ", conerr)
+	return
+	}
+	
 	if !inputread.Scan() {
 	Printlog(fmt.Sprintf("Connection disconnected: %s",ADR))
 	return
@@ -70,7 +77,7 @@ func handleConnection(conn net.Conn) {
 	return
 	}
 
-	
+
 	
 	}
 	
