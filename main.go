@@ -51,14 +51,14 @@ func handleConnection(conn net.Conn) {
 
 	timeout := 30 * time.Second 
 	inputread := bufio.NewScanner(conn)
-
+	Handle  := 1024    
 	for {
 	conerr := conn.SetReadDeadline(time.Now().Add(timeout))
 	if conerr != nil{
 	fmt.Printf("Cannot set deadline, connection timeout: ", conerr)
 	return
 	}
-	
+
 	if !inputread.Scan() {
 	Printlog(fmt.Sprintf("Connection disconnected: %s",ADR))
 	return
@@ -67,6 +67,10 @@ func handleConnection(conn net.Conn) {
 	input := strings.TrimSpace(inputread.Text())
 	records.WriteString(fmt.Sprintf("%s\n", input))	
 
+	if len(input) > Handle {
+	conn.Write([]byte("Truncated the message, due to its length "))
+	input = input[:Handle]
+	}
 
 	if input == "" {
 	conn.Write([]byte("Say something...\n"))
