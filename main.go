@@ -25,28 +25,24 @@ func main() {
 			fmt.Println("Error accepting:", err)
 			continue
 		}
-		go handleConnection(conn)//addded go routine
+		go handleConnection(conn)
 	}
 } //infinite loop
 
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
-	//buf := make([]byte, 1024)
-	//add the log connection for the timestamp
-
-	// for {
-	// 	n, err := conn.Read(buf)
-	// 	if err != nil {
-	// 		fmt.Println("Error reading from client:", err)
-	// 		return
-	// 	}
-	// 	_, err = conn.Write(buf[:n])
-	// 	if err != nil {
-	// 		fmt.Println("Error writing to client:", err)
-	// 	}
-	// } remove these and implement mathods-2-9
+	
+	ADR := conn.RemoteAddr().String()
+	Printlog(fmt.Sprintf("A new connection:%s - %s", ADR, time.Now().Format("2025-04-09 13:04:10")))
+	
 }
+
+
+
+
+
+
 
 //run the function using:
 // using main.go and then open in web
