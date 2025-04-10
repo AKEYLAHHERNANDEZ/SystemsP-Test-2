@@ -24,7 +24,7 @@ func main() {
 	}
 	defer listener.Close()
 
-	fmt.Printf("Server listening on %s\n: ", ListenON)
+	fmt.Printf("Server listening on %s\n ", ListenON)
 
 	for {
 		conn, err := listener.Accept()
@@ -52,7 +52,6 @@ func handleConnection(conn net.Conn) {
 
 	timeout := 30 * time.Second
 	inputread := bufio.NewScanner(conn)
-	Handle := 1024
 
 	for {
 		conerr := conn.SetReadDeadline(time.Now().Add(timeout))
@@ -62,50 +61,51 @@ func handleConnection(conn net.Conn) {
 		}
 
 		if !inputread.Scan() {
-			Print(fmt.Sprintf("Connection disconnected: %s", ADR))
+			if err := inputread.Err(); err != nil {
+				Print(fmt.Sprintf("Read timeout or error from %s: %v", ADR, err))
+			} else {
+				Print(fmt.Sprintf("Connection disconnected: %s", ADR))
+			}
 			return
 		}
 
 		input := strings.TrimSpace(inputread.Text())
-		//records.WriteString(fmt.Sprintf("%s\n", input))
 		if _, err := records.WriteString(input + "\n"); err != nil {
 			fmt.Printf("Error! Can't log message : %v\n", err)
 		}
-
-		if len(input) > Handle {
-			conn.Write([]byte("Truncated the message, due to its length "))
-			input = input[:Handle]
+		if len(input) > 1024 {
+			input = input[:1024]
+			conn.Write([]byte("Truncated the message, due to its length.\n"))
 		}
 
 		switch {
 		case input == "":
-				conn.Write([]byte("Say something...\n"))
-			
-			case input == "hello":
-				conn.Write([]byte("Hi there!\n"))
-			
+			conn.Write([]byte("Say something...\n"))
 
-			case input == "bye":
-				conn.Write([]byte("Goodbye!\n"))
-				return
-			
-	
-			case input == "/time":
-				conn.Write([]byte(time.Now().Format(time.RFC1123) + "\n"))
-						
-			case input == "/quit":
-				conn.Write([]byte("Closed connection.\n"))
-				return
+		case input == "hello":
+			conn.Write([]byte("Hi there!\n"))
 
-			case strings.HasPrefix(input, "/echo"):
-				conn.Write([]byte(input[6:] + "\n"))
-		
-			default:
+		case input == "bye":
+			conn.Write([]byte("Goodbye!\n"))
+			Print(fmt.Sprintf("Connection from %s closed with 'bye'", ADR))
+			conn.Close()
+			return
+
+		case input == "/time":
+			conn.Write([]byte(time.Now().Format(time.RFC1123) + "\n"))
+
+		case input == "/quit":
+			conn.Write([]byte("Closed connection.\n"))
+			Print(fmt.Sprintf("Connection from %s closed with '/quit'", ADR))
+			conn.Close()
+			return
+
+		case strings.HasPrefix(input, "/echo"):
+			conn.Write([]byte(input[6:] + "\n"))
+
+		default:
 			conn.Write([]byte(input + "\n"))
-			
 		}
-	
-
 	}
 }
 
