@@ -113,10 +113,8 @@ func Print(msg string) {
 	fmt.Printf("[%s] %s\n", time.Now().Format("2006-01-02 15:04:05"), msg)
 }
 
-//run the function using:
-// using main.go and then open in web
-//open a new terminal and run nc localhost 4000
+
 
 //task:
 //- main (code - completed), (comments - incomplete)
-//- Hanlde function (code - incomplete), (comments - incomplete)
+//- Hanlde function (code - complete), (comments - incomplete)
