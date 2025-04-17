@@ -2,7 +2,7 @@
 
 My TCP Echo Server that listens for client connections, logs all received messages to a file &  handles custom commands.
 
-Link to Youtube demo video: 
+Link to Youtube demo video: https://youtu.be/vG0LbMo_uls
 
 
 How to run the server :
@@ -23,7 +23,7 @@ Input: no input (waiting)   otuput: Server disconnects after 30 seconds
 
 Which functionality was the most educationally enriching:
 
-One of the most enriching parts was implementing error handling and file logging. Writing logs to files, handling disconnects, and giving useful server feedback was interesting to learn and implement. It also helped me understand how servers manage client connections and input validation, it also  taught me the  debugging is important and of course, using proper error handling.
+One of the most enriching parts was implementing error handling and file logging. Writing logs to files, handling disconnects and giving useful server feedback was interesting to learn and implement. It also helped me understand how servers manage client connections and input validation, it also  taught me that debugging is important and of course, using proper error handling.
 
 
 Which functionally required that you do the most research:
