@@ -28,7 +28,7 @@ One of the most enriching parts was implementing error handling and file logging
 
 Which functionally required that you do the most research:
 
-The most research went into implementing SetReadDeadline, creating log files, and understanding error handling. Figuring out how to properly set timeouts for inactive clients, generate log files for each user and fix errors at each step was a bit complex. I spent a lot of time figuringout Go documentation and troubleshooting various commands to make it all work smoothly.
+The most research went into implementing SetReadDeadline, creating log files, and error handling. Figuring out how to properly set timeouts for inactive clients, generate log files for each user and fix errors at each step was a bit complex. I spent a lot of time figuringout Go documentation and troubleshooting various commands to make it all work smoothly.
 
 
 
