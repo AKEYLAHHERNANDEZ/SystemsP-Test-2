@@ -7,7 +7,7 @@ Link to Youtube demo video:
 
 How to run the server :
 To run the  default server use the command: go run main.go 
-Or run a server with a specific port use the command: go run main.go -flagPort=7000 
+Or to run a server with a specific port use the command: go run main.go -flagPort=7000 
 After running the server, open a new terminal and connect the client using the command: nc localhost 4000 
 
 Commands to run on the Client: 
@@ -23,12 +23,12 @@ Input: no input (waiting)   otuput: Server disconnects after 30 seconds
 
 Which functionality was the most educationally enriching:
 
-One of the most enriching functionality was implementing error handling and file logging. Writing logs to files, handling disconnects, and giving useful server feedback was inteesting to leanr and implement, while also learning how  servers manage connections and input validation. It also taught the importance of logging for debugging and ofcourse error handle.
-
+One of the most enriching parts was implementing error handling and file logging. Writing logs to files, handling disconnects, and giving useful server feedback was interesting to learn and implement. It also helped me understand how servers manage client connections and input validation, it also  taught me the  debugging is important and of course, using proper error handling.
 
 
 Which functionally required that you do the most research:
 
-The most research went into implementing SetReadDeadline, log files, and the error handling. Understanding how to properly set timeouts for when the client is inactive, creating  log files for each user, and managing errors at each step was complex. I had to understand what go official documentation was and troubleshoot alot of different commands.
+The most research went into implementing SetReadDeadline, creating log files, and understanding error handling. Figuring out how to properly set timeouts for inactive clients, generate log files for each user and fix errors at each step was a bit complex. I spent a lot of time figuringout Go documentation and troubleshooting various commands to make it all work smoothly.
+
 
 
