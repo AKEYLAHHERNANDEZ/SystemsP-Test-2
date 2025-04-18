@@ -1,4 +1,7 @@
-// creating a tcp echo server
+// Name:Akeylah Hernandez
+// Filename:main.go
+// Assignment: Test #2
+//Creating a tcp echo server
 package main
 
 import (
